@@ -1,16 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 
 /// <summary>
 /// Manages an experiment with multiple runs.
 /// </summary>
-public class ExperimentExec : MonoBehaviour
+public class ExpExec : MonoBehaviour
 {
     [Header("Static")]
-    public static ExperimentExec live;
+    public static ExpExec live;
 
     [Header("Unity Configuration")]
     public GameObject particleExec;
@@ -65,14 +66,19 @@ public class ExperimentExec : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (state != ExpState.Run) return;
+
         if (live is not null) {
+            if (runTicks == targetTicks) {
+                EndRun(save: true);
+                return;
+            }
+
             foreach (KeyValuePair<string, int> tracking in liveData) {
                 runData[tracking.Key][runTicks] = tracking.Value;
             }
 
-            if (++runTicks > targetTicks) {
-                EndRun();
-            }
+            runTicks++;
         }
     }
 
@@ -102,6 +108,7 @@ public class ExperimentExec : MonoBehaviour
     void EndRun(bool save = false)
     {
         state = ExpState.Standby;
+        Time.timeScale = 0;
 
         particleExec.GetComponent<ParticleExec>().DestroyAll();
 
@@ -115,19 +122,25 @@ public class ExperimentExec : MonoBehaviour
         } else {
             NextRun();
         }
-
-        Time.timeScale = 0;
     }
 
     void EndExp()
     {
         live = null;
+        Time.timeScale = 0;
     }
 
     void SaveData()
     {
-        // var exportData = Json.Serialize(expData);
-        // File.WriteAllText(exportFilepath, exportData);
+        Debug.Log("SAVING DATA");
+        string exportData = JsonUtility.ToJson(expData, prettyPrint: true);
+        Debug.Log(exportData);
+
+        using (FileStream stream = new(exportFilepath, FileMode.Create)) {
+            using (StreamWriter writer = new(stream)) {
+                writer.Write(exportData);
+            }
+        }
     }
 
     void Reset()

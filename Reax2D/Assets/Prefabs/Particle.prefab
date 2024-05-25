@@ -47,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 095d73885953e7a45ab897f7bccf920d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  particleSpawner: {fileID: 0}
   rigidBody: {fileID: 9206235685675211779}
-  rootSize: 0.42
+  particleExec: {fileID: 0}
+  rootSize: 0.69
   apexInitVelocity: 10
   element: 
 --- !u!212 &707836507507478566

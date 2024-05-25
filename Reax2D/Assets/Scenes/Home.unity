@@ -317,7 +317,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
+  m_BackGroundColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.8392157}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -368,7 +368,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -10}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -972,8 +972,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f44ac8a099fb18c448c5a6a5fcbb1ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  existingParticles: []
   particlePrefab: {fileID: 730359894685280812, guid: fcc349dac9ee300448cedcae74a3f7c7, type: 3}
+  sizeSi: 1
+  sizeO: 0.9
+  sizeX: 0.8
+  sizeC: 0.7
+  colourSi: {r: 1, g: 0.45322967, b: 0, a: 0}
+  colourO: {r: 0, g: 0.41319132, b: 1, a: 0}
+  colourX: {r: 0.505, g: 0.505, b: 0.505, a: 0}
+  colourC: {r: 0, g: 0, b: 0, a: 0}
+  existingParticles: []
 --- !u!4 &2010917679
 Transform:
   m_ObjectHideFlags: 0
