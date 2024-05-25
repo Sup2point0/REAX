@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Particles : MonoBehaviour
+public class Particle : MonoBehaviour
 {
     [Header("Unity Configuration")]
     public Rigidbody2D rigidBody;
@@ -10,7 +10,6 @@ public class Particles : MonoBehaviour
 
     [Header("Particles Configuration")]
     public float rootSize;
-    public float apexInitVelocity;
 
     [Header("Attributes")]
     public string element;
@@ -23,23 +22,23 @@ public class Particles : MonoBehaviour
         }
     }
 
-    public void Init(ParticleExec exec, string elem)
+    public void Init(ParticleExec exec, string element, Vector2 velocity)
     {
         particleExec = exec;
-        element = elem;
+        this.element = element;
 
         size = exec.sizes[element];
         gameObject.GetComponent<SpriteRenderer>().color = exec.colours[element];
 
-        rigidBody.velocity = Random.insideUnitCircle * apexInitVelocity;
+        rigidBody.velocity = velocity;
     }
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (
             collision.gameObject.name != "Particle(Clone)" ||
-            collision.gameObject.GetComponent<Particles>() == null ||
-            !collision.gameObject.GetComponent<Particles>().isActiveAndEnabled
+            collision.gameObject.GetComponent<Particle>() == null ||
+            !collision.gameObject.GetComponent<Particle>().isActiveAndEnabled
         ) {
             return;
         }
@@ -48,7 +47,7 @@ public class Particles : MonoBehaviour
         ExpExec.live.TESTING_collisions++;
 
         var that = collision.gameObject;
-        var thatScript = that.GetComponent<Particles>();
+        var thatScript = that.GetComponent<Particle>();
 
         float threshold;
         var reactants = (element, thatScript.element);

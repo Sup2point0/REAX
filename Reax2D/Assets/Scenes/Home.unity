@@ -973,14 +973,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particlePrefab: {fileID: 730359894685280812, guid: fcc349dac9ee300448cedcae74a3f7c7, type: 3}
-  sizeSi: 1
-  sizeO: 0.9
-  sizeX: 0.8
+  sizeSi: 1.1
+  sizeO: 0.6
+  sizeX: 1
   sizeC: 0.7
-  colourSi: {r: 1, g: 0.45322967, b: 0, a: 0}
-  colourO: {r: 0, g: 0.41319132, b: 1, a: 0}
-  colourX: {r: 0.505, g: 0.505, b: 0.505, a: 0}
-  colourC: {r: 0, g: 0, b: 0, a: 0}
+  colourSi: {r: 1, g: 0.66534376, b: 0.22327036, a: 1}
+  colourO: {r: 0.24842751, g: 0.55789846, b: 1, a: 1}
+  colourX: {r: 0.505, g: 0.505, b: 0.505, a: 1}
+  colourC: {r: 0, g: 0, b: 0, a: 1}
+  apexInitVelocity: 0
   existingParticles: []
 --- !u!4 &2010917679
 Transform:

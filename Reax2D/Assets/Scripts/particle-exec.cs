@@ -1,7 +1,8 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ParticleExec : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class ParticleExec : MonoBehaviour
     public Color colourX;
     public Color colourC;
     public Dictionary<string, Color> colours;
+    
+    public float apexInitVelocity;
     
     [Header("Static Dynamic")]
     public List<GameObject> existingParticles;
@@ -40,16 +43,29 @@ public class ParticleExec : MonoBehaviour
         };
     }
 
-    public void SpawnParticle(string substance, Transform transform)
+    public void SpawnParticle(string substance, Transform transform, Vector2 velocity)
     {
         var clone = Instantiate(particlePrefab, transform.position, transform.rotation);
-        clone.GetComponent<Particles>().Init(this, substance);
+        clone.GetComponent<Particle>().Init(this, substance, velocity);
         Debug.Log($"cloned {clone}");
         existingParticles.Add(clone);
     }
 
     public void SpawnParticles(ExpExec exp)
     {
+        // Calculate kinetic energies for each particle
+        var vels = (
+            from each in Enumerable.Range(0, exp.particleInitCounts.Values.Sum())
+            select Random.insideUnitCircle * apexInitVelocity);
+
+        // E[k] = mv^2
+        var totalKineticEnergy = vels.Sum(each => each.sqrMagnitude);
+        Debug.Log($"total kinetic energy = {totalKineticEnergy}");
+
+        float scale = (float) Math.Sqrt(exp.apexKineticEnergy / totalKineticEnergy);
+        Vector2[] velScaled = vels.Select(each => each / scale).ToArray();
+
+        // Spawn each particle
         foreach (KeyValuePair<string, int> particle in exp.particleInitCounts) {
             for (int i = 0; i < particle.Value; i++) {
                 var boundLeft = -exp.chamberSize.x + sizes.Values.Max();
@@ -62,7 +78,7 @@ public class ParticleExec : MonoBehaviour
                     Random.Range(boundLower, boundUpper),
                     0);
                     
-                SpawnParticle(particle.Key, transform);
+                SpawnParticle(particle.Key, transform, velScaled[i]);
             }
         }
     }

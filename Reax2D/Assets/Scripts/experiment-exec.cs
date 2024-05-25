@@ -20,11 +20,14 @@ public class ExpExec : MonoBehaviour
     [Header("Experiment Configuration")]
     public Dictionary<string, int> particleInitCounts;
     public AdjacencyMatrix<float> bondingProspects;
+
     public Vector2 chamberSize;
     public int targetRuns = 1;
     public int targetTicks;  // TODO calibrate
+    public float apexKineticEnergy;
     public string exportFilepath;
 
+    [Header("Experiment Data")]
     public Dictionary<string, int> liveData;
     public Dictionary<string, int[]> runData;
     public List<Dictionary<string, int[]>> expData;
@@ -41,7 +44,7 @@ public class ExpExec : MonoBehaviour
     public float SiX;
     public float SiC;
 
-    [Header("Experiment Tracking")]
+    [Header("Experiment State")]
     public ExpState state;
     public int runIndex = -1; // increments to 0 on first run
     public int runTicks = 0;
@@ -133,6 +136,9 @@ public class ExpExec : MonoBehaviour
     void SaveData()
     {
         Debug.Log("SAVING DATA");
+
+        // List<Dictionary<string, int[]>> expData;
+        // List<
         string exportData = JsonUtility.ToJson(expData, prettyPrint: true);
         Debug.Log(exportData);
 
