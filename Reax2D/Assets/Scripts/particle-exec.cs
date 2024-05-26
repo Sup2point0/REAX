@@ -6,6 +6,7 @@ using Random = UnityEngine.Random;
 
 public class ParticleExec : MonoBehaviour
 {
+    public Vector2[] velScaled;
     [Header("Unity Configuration")]
     public GameObject particlePrefab;
 
@@ -23,6 +24,7 @@ public class ParticleExec : MonoBehaviour
     public Dictionary<string, Color> colours;
     
     public float apexInitVelocity;
+    public float apexKineticEnergy;
     
     [Header("Static Dynamic")]
     public List<GameObject> existingParticles;
@@ -47,7 +49,6 @@ public class ParticleExec : MonoBehaviour
     {
         var clone = Instantiate(particlePrefab, transform.position, transform.rotation);
         clone.GetComponent<Particle>().Init(this, substance, velocity);
-        Debug.Log($"cloned {clone}");
         existingParticles.Add(clone);
     }
 
@@ -60,10 +61,11 @@ public class ParticleExec : MonoBehaviour
 
         // E[k] = mv^2
         var totalKineticEnergy = vels.Sum(each => each.sqrMagnitude);
-        Debug.Log($"total kinetic energy = {totalKineticEnergy}");
+        // Debug.Log($"div = {apexKineticEnergy / totalKineticEnergy}");
 
-        float scale = (float) Math.Sqrt(exp.apexKineticEnergy / totalKineticEnergy);
-        Vector2[] velScaled = vels.Select(each => each / scale).ToArray();
+        float scale = (float) Math.Sqrt(apexKineticEnergy / totalKineticEnergy);
+        // Debug.Log($"scale = {scale}");
+        velScaled = vels.Select(each => each / scale).ToArray();
 
         // Spawn each particle
         foreach (KeyValuePair<string, int> particle in exp.particleInitCounts) {

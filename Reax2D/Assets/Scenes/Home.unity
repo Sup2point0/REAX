@@ -600,7 +600,7 @@ MonoBehaviour:
   chamberSize: {x: 18, y: 8}
   targetRuns: 3
   targetTicks: 1200
-  exportFilepath: data.json
+  exportFilepath: data/data.json
   Si: 50
   X: 40
   O: 30
@@ -972,6 +972,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f44ac8a099fb18c448c5a6a5fcbb1ca6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  velScaled: []
   particlePrefab: {fileID: 730359894685280812, guid: fcc349dac9ee300448cedcae74a3f7c7, type: 3}
   sizeSi: 1.1
   sizeO: 0.6
@@ -981,7 +982,8 @@ MonoBehaviour:
   colourO: {r: 0.24842751, g: 0.55789846, b: 1, a: 1}
   colourX: {r: 0.505, g: 0.505, b: 0.505, a: 1}
   colourC: {r: 0, g: 0, b: 0, a: 1}
-  apexInitVelocity: 0
+  apexInitVelocity: 10
+  apexKineticEnergy: 5000
   existingParticles: []
 --- !u!4 &2010917679
 Transform:

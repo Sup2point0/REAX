@@ -24,7 +24,6 @@ public class ExpExec : MonoBehaviour
     public Vector2 chamberSize;
     public int targetRuns = 1;
     public int targetTicks;  // TODO calibrate
-    public float apexKineticEnergy;
     public string exportFilepath;
 
     [Header("Experiment Data")]
