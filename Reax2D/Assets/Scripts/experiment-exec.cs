@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using TMPro;
 
 
 /// <summary>
@@ -10,11 +11,14 @@ using UnityEngine;
 /// </summary>
 public class ExpExec : MonoBehaviour
 {
+    #region ATTRIBUTES
     [Header("Static")]
     public static ExpExec live;
 
     [Header("Unity Configuration")]
     public GameObject particleExec;
+    public GameObject vitalsDisplay;
+    public TMP_Text vitalsDisplayText;
     public int TESTING_collisions;
 
     [Header("Experiment Configuration")]
@@ -45,11 +49,13 @@ public class ExpExec : MonoBehaviour
 
     [Header("Experiment State")]
     public ExpState state;
-    public int runIndex = -1; // increments to 0 on first run
+    public int runIndex = 0;
     public int runTicks = 0;
 
     public enum ExpState { Run, Standby }
+    #endregion
 
+    #region CORE
     void Start()
     {
         Dictionary<string, int> particles = new() {
@@ -62,27 +68,39 @@ public class ExpExec : MonoBehaviour
             ["Si", "C"] = SiC
         };
 
+        vitalsDisplayText = vitalsDisplay.GetComponent<TMP_Text>();
+
         InitExp(particles, prospects);
         RunExp();
     }
 
     void FixedUpdate()
     {
-        if (state != ExpState.Run) return;
-
-        if (live is not null) {
-            if (runTicks == targetTicks) {
-                EndRun(save: true);
-                return;
-            }
-
-            foreach (KeyValuePair<string, int> tracking in liveData) {
-                runData[tracking.Key][runTicks] = tracking.Value;
-            }
-
-            runTicks++;
+        if (state != ExpState.Run || live is null) return;
+        if (runTicks == targetTicks) {
+            EndRun(save: true);
+            return;
         }
+
+        foreach (KeyValuePair<string, int> tracking in liveData) {
+            runData[tracking.Key][runTicks] = tracking.Value;
+        }
+        runTicks++;
+
+        var text = @$"state = {state}
+run = {runIndex + 1}/{targetRuns}
+ticks = {runTicks}/{targetTicks}
+collisions = {liveData["collisions"]}
+reactions = {liveData["reactions"]}
+
+Si = {liveData["particles.Si"]}
+C = {liveData["particles.C"]}
+O = {liveData["particles.O"]}
+X = {liveData["particles.X"]}
+";
+        vitalsDisplayText.SetText(text);
     }
+    #endregion
 
     void InitExp(
         Dictionary<string, int> particles,
@@ -102,7 +120,6 @@ public class ExpExec : MonoBehaviour
     void NextRun()
     {
         state = ExpState.Run;
-        runIndex++;
         runTicks = 0;
         Reset();
     }
@@ -119,7 +136,7 @@ public class ExpExec : MonoBehaviour
             SaveData();
         }
 
-        if (runIndex >= targetRuns) {
+        if (++runIndex >= targetRuns) {
             EndExp();
         } else {
             NextRun();
@@ -134,12 +151,9 @@ public class ExpExec : MonoBehaviour
 
     void SaveData()
     {
-        Debug.Log("SAVING DATA");
-
         // List<Dictionary<string, int[]>> expData;
         // List<
         string exportData = JsonUtility.ToJson(expData, prettyPrint: true);
-        Debug.Log(exportData);
 
         using (FileStream stream = new(exportFilepath, FileMode.Create)) {
             using (StreamWriter writer = new(stream)) {
@@ -153,6 +167,7 @@ public class ExpExec : MonoBehaviour
         TESTING_collisions = 0;
         liveData = new() {
             {"collisions", 0},
+            {"reactions", 0},
             {"particles.Si", particleInitCounts["Si"]},
             {"particles.C", particleInitCounts["C"]},
             {"particles.X", particleInitCounts["X"]},
@@ -160,6 +175,7 @@ public class ExpExec : MonoBehaviour
         };
         runData = new() {
             {"collisions", new int[targetTicks]},
+            {"reactions", new int[targetTicks]},
             {"particles.Si", new int[targetTicks]},
             {"particles.C", new int[targetTicks]},
             {"particles.X", new int[targetTicks]},

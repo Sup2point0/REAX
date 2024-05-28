@@ -83,6 +83,8 @@ public class ParticleExec : MonoBehaviour
                 SpawnParticle(particle.Key, transform, velScaled[i]);
             }
         }
+
+        // Debug.Log($"total kinetic energy = {(from each in existingParticles select each.GetComponent<Particle>().rigidBody.velocity.magnitude).Sum()}");
     }
 
     public void DestroyAll()

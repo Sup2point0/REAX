@@ -55,6 +55,7 @@ public class Particle : MonoBehaviour
         if (!canReact) return;
 
         if (Random.value < threshold) {
+            ExpExec.live.liveData["reactions"]++;
             ExpExec.live.liveData[$"particles.{element}"]--;
             ExpExec.live.liveData[$"particles.{thatScript.element}"]--;
 
@@ -67,8 +68,6 @@ public class Particle : MonoBehaviour
             Destroy(that);
             particleExec.existingParticles.Remove(gameObject);
             particleExec.existingParticles.Remove(that.gameObject);
-
-            Debug.Log("ANNIHILATION");
         }
     }
 }
