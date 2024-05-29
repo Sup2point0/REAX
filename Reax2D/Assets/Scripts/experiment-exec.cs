@@ -88,17 +88,20 @@ public class ExpExec : MonoBehaviour
         }
         runTicks++;
 
-        var text = @$"state = {state}
-run = {runIndex + 1}/{targetRuns}
-ticks = {runTicks}/{targetTicks}
-collisions = {liveData["collisions"]}
-reactions = {liveData["reactions"]}
-
-Si = {liveData["particles.Si"]}
-C = {liveData["particles.C"]}
-O = {liveData["particles.O"]}
-X = {liveData["particles.X"]}
-";
+        var text = Utils.RenderDebugInfo(
+            new Dictionary<string, object>() {
+                ["state"] = state,
+                ["run"] = $"{runIndex + 1}/{targetRuns}",
+                ["ticks"] = $"{runTicks}/{targetTicks}",
+                ["collisions"] = liveData["collisions"],
+                ["reactions"] = liveData["reactions"],
+                [""] = "",
+                ["Si"] = liveData["particles.Si"],
+                ["C"] = liveData["particles.C"],
+                ["O"] = liveData["particles.O"],
+                ["X"] = liveData["particles.X"],
+            }
+        );
         vitalsDisplayText.SetText(text);
     }
     #endregion
