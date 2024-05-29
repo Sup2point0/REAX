@@ -1,10 +1,10 @@
-TextMesh Pro/
+# project
 Reax3D/
 
-# This .gitignore file should be placed at the root of your Unity project directory
-#
-# Get latest from https://github.com/github/gitignore/blob/main/Unity.gitignore
-#
+# Python
+__pycache__/
+
+# Unity
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
@@ -12,6 +12,7 @@ Reax3D/
 [Bb]uilds/
 [Ll]ogs/
 [Uu]ser[Ss]ettings/
+TextMesh Pro/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
