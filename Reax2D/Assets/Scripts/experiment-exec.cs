@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using TMPro;
+using Newtonsoft.Json;
 
 
 /// <summary>
@@ -153,7 +154,7 @@ X = {liveData["particles.X"]}
     {
         // List<Dictionary<string, int[]>> expData;
         // List<
-        string exportData = JsonUtility.ToJson(expData, prettyPrint: true);
+        string exportData = JsonConvert.SerializeObject(expData, Formatting.Indented);
 
         using (FileStream stream = new(exportFilepath, FileMode.Create)) {
             using (StreamWriter writer = new(stream)) {
