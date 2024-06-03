@@ -20,7 +20,6 @@ public class ExpExec : MonoBehaviour
     public GameObject particleExec;
     public GameObject vitalsDisplay;
     public TMP_Text vitalsDisplayText;
-    public int TESTING_collisions;
 
     [Header("Experiment Configuration")]
     public Dictionary<string, int> particleInitCounts;
@@ -155,20 +154,22 @@ public class ExpExec : MonoBehaviour
 
     void SaveData()
     {
-        // List<Dictionary<string, int[]>> expData;
-        // List<
-        string exportData = JsonConvert.SerializeObject(expData, Formatting.Indented);
+        var exportData = new List<object>(expData);
+        exportData.Insert(0, new Dictionary<string, object>() {
+            ["target-ticks"] = targetTicks,
+            ["target-runs"] = targetRuns,
+        });
+        string exportText = JsonConvert.SerializeObject(exportData, Formatting.Indented);
 
         using (FileStream stream = new(exportFilepath, FileMode.Create)) {
             using (StreamWriter writer = new(stream)) {
-                writer.Write(exportData);
+                writer.Write(exportText);
             }
         }
     }
 
     void Reset()
     {
-        TESTING_collisions = 0;
         liveData = new() {
             {"collisions", 0},
             {"reactions", 0},

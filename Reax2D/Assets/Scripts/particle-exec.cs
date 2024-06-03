@@ -54,7 +54,7 @@ public class ParticleExec : MonoBehaviour
 
     public void SpawnParticles(ExpExec exp)
     {
-        // Calculate kinetic energies for each particle
+        // Assign kinetic energies for each particle
         var vels = (
             from each in Enumerable.Range(0, exp.particleInitCounts.Values.Sum())
             select Random.insideUnitCircle * apexInitVelocity);
@@ -84,7 +84,7 @@ public class ParticleExec : MonoBehaviour
             }
         }
 
-        // Debug.Log($"total kinetic energy = {(from each in existingParticles select each.GetComponent<Particle>().rigidBody.velocity.magnitude).Sum()}");
+        Debug.Log($"total kinetic energy = {(from each in existingParticles select each.GetComponent<Particle>().rigidBody.velocity.sqrMagnitude).Sum()}");
     }
 
     public void DestroyAll()

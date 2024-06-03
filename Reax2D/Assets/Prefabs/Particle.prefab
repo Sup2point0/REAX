@@ -49,8 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidBody: {fileID: 9206235685675211779}
   particleExec: {fileID: 0}
-  rootSize: 0.69
-  apexInitVelocity: 10
+  rootSize: 1
   element: 
 --- !u!212 &707836507507478566
 SpriteRenderer:

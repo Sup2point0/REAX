@@ -44,7 +44,6 @@ public class Particle : MonoBehaviour
         }
 
         ExpExec.live.liveData["collisions"]++;
-        ExpExec.live.TESTING_collisions++;
 
         var that = collision.gameObject;
         var thatScript = that.GetComponent<Particle>();
