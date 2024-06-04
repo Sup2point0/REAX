@@ -6,7 +6,7 @@ using UnityEngine;
 public class Particle : MonoBehaviour
 {
     [Header("Unity Configuration")]
-    public Rigidbody2D rigidBody;
+    public Rigidbody rigidBody;
     public ParticleExec particleExec;
 
     [Header("Particles Configuration")]
@@ -23,7 +23,7 @@ public class Particle : MonoBehaviour
         }
     }
 
-    public void Init(ParticleExec exec, string element, Vector2 velocity)
+    public void Init(ParticleExec exec, string element, Vector3 velocity)
     {
         particleExec = exec;
         this.element = element;
@@ -34,7 +34,7 @@ public class Particle : MonoBehaviour
         rigidBody.velocity = velocity;
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter(Collision collision)
     {
         if (
             collision.gameObject.name != "Particle(Clone)" ||

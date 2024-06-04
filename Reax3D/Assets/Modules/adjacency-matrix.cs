@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 
+
 public class AdjacencyMatrix<T>
 {
     private Dictionary<(string, string), T> _data;

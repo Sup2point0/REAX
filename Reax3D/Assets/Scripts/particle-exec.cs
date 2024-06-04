@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 
 public class ParticleExec : MonoBehaviour
 {
-    public Vector2[] velScaled;
+    public Vector3[] velScaled;
     [Header("Unity Configuration")]
     public GameObject particlePrefab;
 
@@ -46,7 +46,7 @@ public class ParticleExec : MonoBehaviour
         };
     }
 
-    public void SpawnParticle(string substance, Transform transform, Vector2 velocity)
+    public void SpawnParticle(string substance, Transform transform, Vector3 velocity)
     {
         var clone = Instantiate(particlePrefab, transform.position, transform.rotation);
         clone.GetComponent<Particle>().Init(this, substance, velocity);
@@ -58,7 +58,7 @@ public class ParticleExec : MonoBehaviour
         // Assign kinetic energies for each particle
         var vels = (
             from each in Enumerable.Range(0, exp.particleInitCounts.Values.Sum())
-            select Random.insideUnitCircle * apexInitVelocity);
+            select Random.insideUnitSphere * apexInitVelocity);
 
         // E[k] = mv^2
         var totalKineticEnergy = vels.Sum(each => each.sqrMagnitude);

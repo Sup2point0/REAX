@@ -25,7 +25,7 @@ public class ExpExec : MonoBehaviour
     public Dictionary<string, int> particleInitCounts;
     public AdjacencyMatrix<float> bondingProspects;
 
-    public Vector2 chamberSize;
+    public Vector3 chamberSize;
     public int targetRuns = 1;
     public int targetTicks;  // TODO calibrate
     public string exportFilepath;
