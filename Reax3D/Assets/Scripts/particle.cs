@@ -56,13 +56,16 @@ public class Particle : MonoBehaviour
 
         if (Random.value < threshold) {
             ExpExec.live.liveData["reactions"]++;
+            Debug.Log(ExpExec.live.liveData[$"particles.{element}"]);
+            Debug.Log(ExpExec.live.liveData[$"particles.{thatScript.element}"]);
             ExpExec.live.liveData[$"particles.{element}"]--;
             ExpExec.live.liveData[$"particles.{thatScript.element}"]--;
 
             transform.position = (transform.position + that.transform.position) / 2;
+            Vector3 velocity = (rigidBody.velocity + thatScript.rigidBody.velocity) / 2;
 
-            // particleExec.GetComponent<ParticleExec>()
-            //     .SpawnParticle("", transform);
+            particleExec.GetComponent<ParticleExec>()
+                .SpawnParticle("Y", transform, velocity);
 
             Destroy(this);
             Destroy(that);

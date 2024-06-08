@@ -3,7 +3,7 @@ import pathlib
 
 
 ROOT = pathlib.Path(__file__).parent.parent.absolute()
-LEVEL = "Reax3D"
+LEVEL = "Reax2D"
 
 
 def load(filename: str, source = LEVEL) -> dict:

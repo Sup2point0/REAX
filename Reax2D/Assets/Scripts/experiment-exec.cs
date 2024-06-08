@@ -26,6 +26,7 @@ public class ExpExec : MonoBehaviour
     public AdjacencyMatrix<float> bondingProspects;
 
     public Vector2 chamberSize;
+    public int temperature;
     public int targetRuns = 1;
     public int targetTicks;  // TODO calibrate
     public string exportFilepath;
@@ -35,48 +36,45 @@ public class ExpExec : MonoBehaviour
     public Dictionary<string, int[]> runData;
     public List<Dictionary<string, int[]>> expData;
 
-    [Header("Particle Counts")]
-    public int Si;
-    public int X;
-    public int O;
-    public int C;
+    [Header("Particle Concentrations")]
+    public int totalParticles;
+    public float Si;
+    public float O;
 
     [Header("Bonding Probabilities")]
     public float SiSi;
     public float SiO;
-    public float SiX;
-    public float SiC;
 
     [Header("Experiment State")]
     public ExpState state;
     public int runIndex = 0;
     public int runTicks = 0;
 
-    public enum ExpState { Run, Standby }
+    public enum ExpState { Run, Standby, Done }
     #endregion
 
     #region CORE
     void Start()
     {
-        Dictionary<string, int> particles = new() {
-            {"Si", Si}, {"X", X}, {"O", O}, {"C", C}
-        };
-        AdjacencyMatrix<float> prospects = new() {
-            ["Si", "Si"] = SiSi,
-            ["Si", "O"] = SiO,
-            ["Si", "X"] = SiX,
-            ["Si", "C"] = SiC
-        };
-
         vitalsDisplayText = vitalsDisplay.GetComponent<TMP_Text>();
 
-        InitExp(particles, prospects);
+        InitExp();
         RunExp();
+    }
+
+    void Update()
+    {
+        if (state == ExpState.Standby) {
+            Debug.Log($"STATUS - starting run {runIndex}");
+            NextRun();
+        }
     }
 
     void FixedUpdate()
     {
-        if (state != ExpState.Run || live is null) return;
+        if (state != ExpState.Run || live is null) {
+            return;
+        };
         if (runTicks == targetTicks) {
             EndRun(save: true);
             return;
@@ -95,23 +93,31 @@ public class ExpExec : MonoBehaviour
                 ["collisions"] = liveData["collisions"],
                 ["reactions"] = liveData["reactions"],
                 [""] = "",
+                ["particles"] = liveData["particles.Si"] + liveData["particles.O"] + liveData["particles.X"],
                 ["Si"] = liveData["particles.Si"],
-                ["C"] = liveData["particles.C"],
                 ["O"] = liveData["particles.O"],
                 ["X"] = liveData["particles.X"],
+                ["SiSi"] = liveData["particles.SiSi"],
+                ["SiO"] = liveData["particles.OSi"],
             }
         );
         vitalsDisplayText.SetText(text);
     }
     #endregion
 
-    void InitExp(
-        Dictionary<string, int> particles,
-        AdjacencyMatrix<float> prospects
-    ) {
+    #region EXP
+    void InitExp()
+    {
         expData = new();
-        particleInitCounts = particles;
-        bondingProspects = prospects;
+        particleInitCounts = new() {
+            {"Si", Mathf.RoundToInt(totalParticles * Si)},
+            {"O", Mathf.RoundToInt(totalParticles * O)},
+            {"X", Mathf.RoundToInt(totalParticles * (1- Si - O))},
+        };
+        bondingProspects = new() {
+            ["Si", "Si"] = SiSi,
+            ["Si", "O"] = SiO,
+        };
     }
 
     void RunExp()
@@ -123,15 +129,14 @@ public class ExpExec : MonoBehaviour
     void NextRun()
     {
         state = ExpState.Run;
+        Time.timeScale = 1;
         runTicks = 0;
         Reset();
     }
 
     void EndRun(bool save = false)
     {
-        state = ExpState.Standby;
-        Time.timeScale = 0;
-
+        Debug.Log("CALL - EndRun()");
         particleExec.GetComponent<ParticleExec>().DestroyAll();
 
         expData.Add(runData);
@@ -140,24 +145,38 @@ public class ExpExec : MonoBehaviour
         }
 
         if (++runIndex >= targetRuns) {
-            EndExp();
+            EndExp(save: true);
         } else {
-            NextRun();
+            state = ExpState.Standby;
+            Time.timeScale = 0;
         }
     }
 
-    void EndExp()
+    void EndExp(bool save = true)
     {
+        state = ExpState.Done;
         live = null;
         Time.timeScale = 0;
+        if (save) {
+            SaveData();
+        }
     }
+    #endregion
 
     void SaveData()
     {
+        Debug.Log("CALL - SaveData()");
         var exportData = new List<object>(expData);
         exportData.Insert(0, new Dictionary<string, object>() {
             ["target-ticks"] = targetTicks,
             ["target-runs"] = targetRuns,
+            ["temperature"] = temperature,
+            ["total-particles"] = totalParticles,
+            ["init-Si"] = particleInitCounts["Si"],
+            ["init-O"] = particleInitCounts["O"],
+            ["init-X"] = particleInitCounts["X"],
+            ["prob-Si+Si"] = bondingProspects["Si", "Si"],
+            ["prob-Si+O"] = bondingProspects["Si", "O"],
         });
         string exportText = JsonConvert.SerializeObject(exportData, Formatting.Indented);
 
@@ -170,25 +189,26 @@ public class ExpExec : MonoBehaviour
 
     void Reset()
     {
+        Debug.Log("CALL - Reset()");
+        particleExec.GetComponent<ParticleExec>().SpawnParticles(exp: this);
+        
         liveData = new() {
             {"collisions", 0},
             {"reactions", 0},
             {"particles.Si", particleInitCounts["Si"]},
-            {"particles.C", particleInitCounts["C"]},
+            {"particles.O", particleInitCounts["O"]},
             {"particles.X", particleInitCounts["X"]},
-            {"particles.O", particleInitCounts["O"]}
+            {"particles.SiSi", 0},
+            {"particles.OSi", 0}
         };
         runData = new() {
             {"collisions", new int[targetTicks]},
             {"reactions", new int[targetTicks]},
             {"particles.Si", new int[targetTicks]},
-            {"particles.C", new int[targetTicks]},
+            {"particles.O", new int[targetTicks]},
             {"particles.X", new int[targetTicks]},
-            {"particles.O", new int[targetTicks]}
+            {"particles.SiSi", new int[targetTicks]},
+            {"particles.OSi", new int[targetTicks]}
         };
-
-        var particleExecScript = particleExec.GetComponent<ParticleExec>();
-        particleExecScript.DestroyAll();
-        particleExecScript.SpawnParticles(this);
     }
 }

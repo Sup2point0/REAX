@@ -123,6 +123,90 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &112597528
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 112597529}
+  - component: {fileID: 112597530}
+  m_Layer: 0
+  m_Name: Bounds
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &112597529
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112597528}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 200, y: 200, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 662217139}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &112597530
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112597528}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.09803922}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &423777379
 GameObject:
   m_ObjectHideFlags: 0
@@ -151,8 +235,8 @@ Transform:
   m_GameObject: {fileID: 423777379}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 12, z: 0}
-  m_LocalScale: {x: 46, y: 4, z: 20}
+  m_LocalPosition: {x: 0, y: 110, z: 0}
+  m_LocalScale: {x: 220, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 662217139}
@@ -342,7 +426,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 110
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -572,6 +656,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 112597529}
   - {fileID: 1809779724}
   - {fileID: 1181637389}
   - {fileID: 423777380}
@@ -606,8 +691,8 @@ Transform:
   m_GameObject: {fileID: 1181637388}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 22, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 27, z: 20}
+  m_LocalPosition: {x: 110, y: 0, z: 0}
+  m_LocalScale: {x: 20, y: 220, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 662217139}
@@ -767,20 +852,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   particleExec: {fileID: 2010917677}
   vitalsDisplay: {fileID: 1956238096}
-  vitalsDisplayText: {fileID: 0}
-  TESTING_collisions: 0
-  chamberSize: {x: 18, y: 8}
-  targetRuns: 3
+  vitalsDisplayText: {fileID: 1956238098}
+  chamberSize: {x: 80, y: 80}
+  temperature: 298
+  targetRuns: 100
   targetTicks: 1200
-  exportFilepath: data/data.json
-  Si: 50
-  X: 40
-  O: 30
-  C: 20
-  SiSi: 0.8
-  SiO: 0.8
-  SiX: 0.8
-  SiC: 0.8
+  exportFilepath: data/exp-1-2.json
+  totalParticles: 400
+  Si: 0.2
+  O: 0.1
+  SiSi: 0.05
+  SiO: 0.5
   state: 0
   runIndex: 0
   runTicks: 0
@@ -827,8 +909,8 @@ Transform:
   m_GameObject: {fileID: 1514885762}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -12, z: 0}
-  m_LocalScale: {x: 46, y: 4, z: 20}
+  m_LocalPosition: {x: 0, y: -110, z: 0}
+  m_LocalScale: {x: 220, y: 20, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 662217139}
@@ -1061,8 +1143,8 @@ Transform:
   m_GameObject: {fileID: 1809779723}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -22, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 27, z: 20}
+  m_LocalPosition: {x: -110, y: 0, z: 0}
+  m_LocalScale: {x: 20, y: 220, z: 20}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 662217139}
@@ -1356,16 +1438,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   velScaled: []
   particlePrefab: {fileID: 730359894685280812, guid: fcc349dac9ee300448cedcae74a3f7c7, type: 3}
-  sizeSi: 1.1
+  sizeSi: 1
   sizeO: 0.6
   sizeX: 1
-  sizeC: 0.7
+  sizeSiSi: 2.5
+  sizeSiO: 2
   colourSi: {r: 1, g: 0.66534376, b: 0.22327036, a: 1}
   colourO: {r: 0.24842751, g: 0.55789846, b: 1, a: 1}
   colourX: {r: 0.505, g: 0.505, b: 0.505, a: 1}
-  colourC: {r: 0, g: 0, b: 0, a: 1}
-  apexInitVelocity: 10
-  apexKineticEnergy: 5000
+  colourSiSi: {r: 1, g: 0.39970052, b: 0, a: 1}
+  colourSiO: {r: 1, g: 0, b: 0.24188852, a: 1}
+  apexInitVelocity: 100
+  apexKineticEnergy: 500000
   existingParticles: []
 --- !u!4 &2010917679
 Transform:

@@ -60,9 +60,12 @@ public class Particle : MonoBehaviour
             ExpExec.live.liveData[$"particles.{thatScript.element}"]--;
 
             transform.position = (transform.position + that.transform.position) / 2;
+            Vector2 velocity = (rigidBody.velocity + thatScript.rigidBody.velocity) / 2;
 
-            // particleExec.GetComponent<ParticleExec>()
-            //     .SpawnParticle("", transform);
+            var (elem1, elem2) = Utils.Order((element, thatScript.element));
+            var name = $"{elem1}{elem2}";
+            particleExec.GetComponent<ParticleExec>().SpawnParticle(name, transform, velocity);
+            ExpExec.live.liveData[$"particles.{name}"]++;
 
             Destroy(this);
             Destroy(that);

@@ -14,13 +14,15 @@ public class ParticleExec : MonoBehaviour
     public float sizeSi;
     public float sizeO;
     public float sizeX;
-    public float sizeC;
+    public float sizeSiSi;
+    public float sizeSiO;
     public Dictionary<string, float> sizes;
 
     public Color colourSi;
     public Color colourO;
     public Color colourX;
-    public Color colourC;
+    public Color colourSiSi;
+    public Color colourSiO;
     public Dictionary<string, Color> colours;
     
     public float apexInitVelocity;
@@ -35,13 +37,15 @@ public class ParticleExec : MonoBehaviour
             { "Si", sizeSi },
             { "O", sizeO },
             { "X", sizeX },
-            { "C", sizeC },
+            { "SiSi", sizeSiSi },
+            { "OSi", sizeSiO },
         };
         colours = new() {
             { "Si", colourSi },
             { "O", colourO },
             { "X", colourX },
-            { "C", colourC },
+            { "SiSi", colourSiSi },
+            { "OSi", colourSiO },
         };
     }
 
@@ -61,11 +65,12 @@ public class ParticleExec : MonoBehaviour
 
         // E[k] = mv^2
         var totalKineticEnergy = vels.Sum(each => each.sqrMagnitude);
-        // Debug.Log($"div = {apexKineticEnergy / totalKineticEnergy}");
+        // var apexKineticEnergy = (
+        //     1.5 * ExpExec.live.totalParticles *
+        //     Constants.Boltzmann * ExpExec.live.temperature);
 
         float scale = (float) Math.Sqrt(apexKineticEnergy / totalKineticEnergy);
-        // Debug.Log($"scale = {scale}");
-        velScaled = vels.Select(each => each / scale).ToArray();
+        velScaled = vels.Select(each => each * scale).ToArray();
 
         // Spawn each particle
         foreach (KeyValuePair<string, int> particle in exp.particleInitCounts) {
@@ -81,10 +86,16 @@ public class ParticleExec : MonoBehaviour
                     0);
                     
                 SpawnParticle(particle.Key, transform, velScaled[i]);
+                // SpawnParticle(particle.Key, transform,
+                //     Random.insideUnitCircle * apexInitVelocity);
             }
         }
 
-        Debug.Log($"total kinetic energy = {(from each in existingParticles select each.GetComponent<Particle>().rigidBody.velocity.sqrMagnitude).Sum()}");
+        try {
+            Debug.Log($"total kinetic energy = {(from each in existingParticles select each.GetComponent<Particle>().rigidBody.velocity.sqrMagnitude).Sum()}");
+        } catch {
+            Debug.Log("ERROR - Log(total kinetic energy)");
+        }
     }
 
     public void DestroyAll()

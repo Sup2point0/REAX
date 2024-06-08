@@ -12,12 +12,13 @@ class Heatrace:
   def __init__(self,
     data: list[dict],
     feature: str,
+    apex = 0,
   ):
     config, *runs = data
 
     # Create lattice
     trace = defaultdict(lambda: 0)
-    apexValue = 0
+    apexValue = apex
 
     for run in runs:
       for tick, value in enumerate(run[feature]):
@@ -39,6 +40,14 @@ class Heatrace:
 
     self.lattice = np.rot90(lattice)
     self.render = Image.fromarray(np.uint8(self.lattice), "RGB")
+
+  def resize(self, width = None, height = None):
+    '''Resize the render.'''
+
+    self.render = self.render.resize((
+      width or self.render.width,
+      height or self.render.height,
+    ), resample = Image.NEAREST)
 
   def show(self):
     '''Display the heatmap.'''

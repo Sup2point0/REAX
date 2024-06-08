@@ -12,21 +12,16 @@ public class AdjacencyMatrix<T>
     {
         _data = new();
         foreach (var item in data) {
-            _data[Order(item.Key)] = item.Value;
+            _data[Utils.Order(item.Key)] = item.Value;
         }
     }
 
     public T this[string prot, string deut]
     {
-        get => _data[Order((prot, deut))];
-        set => _data[Order((prot, deut))] = value;
+        get => _data[Utils.Order((prot, deut))];
+        set => _data[Utils.Order((prot, deut))] = value;
     }
 
-    private (string, string) Order((string, string) keys)
-        => keys.Item1.CompareTo(keys.Item2) > 0
-            ? (keys.Item2, keys.Item1)
-            : (keys.Item1, keys.Item2);
-
     public bool TryGetValue((string, string) keys, out T value)
-        => _data.TryGetValue(Order((keys.Item1, keys.Item2)), out value);
+        => _data.TryGetValue(Utils.Order((keys.Item1, keys.Item2)), out value);
 }
