@@ -12,16 +12,18 @@ class Heatrace:
   def __init__(self,
     data: list[dict],
     feature: str,
+    ticks = 0,
     apex = 0,
   ):
     config, *runs = data
+    ticks = ticks or (config["target-ticks"] +1)
 
     # Create lattice
     trace = defaultdict(lambda: 0)
     apexValue = apex
 
     for run in runs:
-      for tick, value in enumerate(run[feature]):
+      for tick, value in enumerate(run[feature][:ticks]):
         if value > apexValue:
           apexValue = value
         trace[(tick, value)] += 1
@@ -29,7 +31,7 @@ class Heatrace:
     apexFreq = max(trace.values())
 
     # Create heatmap
-    shape = (config["target-ticks"] +1, apexValue +1, 3)
+    shape = (ticks, apexValue +1, 3)
     lattice = np.full(shape, 16)
 
     for cord, freq in trace.items():

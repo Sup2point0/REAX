@@ -24,6 +24,7 @@ public class ExpExec : MonoBehaviour
     [Header("Experiment Configuration")]
     public Dictionary<string, int> particleInitCounts;
     public AdjacencyMatrix<float> bondingProspects;
+    public AdjacencyMatrix<(string, string)> bondingProducts;
 
     public Vector2 chamberSize;
     public int temperature;
@@ -44,6 +45,8 @@ public class ExpExec : MonoBehaviour
     [Header("Bonding Probabilities")]
     public float SiSi;
     public float SiO;
+    public float SiOSi;
+    public float OBreakdown;
 
     [Header("Experiment State")]
     public ExpState state;
@@ -98,7 +101,7 @@ public class ExpExec : MonoBehaviour
                 ["O"] = liveData["particles.O"],
                 ["X"] = liveData["particles.X"],
                 ["SiSi"] = liveData["particles.SiSi"],
-                ["SiO"] = liveData["particles.OSi"],
+                ["SiO"] = liveData["particles.SiO"],
             }
         );
         vitalsDisplayText.SetText(text);
@@ -117,6 +120,16 @@ public class ExpExec : MonoBehaviour
         bondingProspects = new() {
             ["Si", "Si"] = SiSi,
             ["Si", "O"] = SiO,
+            ["Si", "SiO"] = SiOSi,
+            ["SiSi", "O"] = OBreakdown,
+            ["SiSi", "SiO"] = OBreakdown,
+        };
+        bondingProducts = new() {
+            ["Si", "Si"] = ("SiSi", "SiSi"),
+            ["Si", "O"] = ("SiO", "SiO"),
+            ["Si", "SiO"] = ("SiOSi", "SiO"),
+            ["SiSi", "O"] = ("SPECIAL", "SPECIAL"),
+            ["SiSi", "SiO"] = ("SPECIAL", "SPECIAL"),
         };
     }
 
@@ -199,7 +212,7 @@ public class ExpExec : MonoBehaviour
             {"particles.O", particleInitCounts["O"]},
             {"particles.X", particleInitCounts["X"]},
             {"particles.SiSi", 0},
-            {"particles.OSi", 0}
+            {"particles.SiO", 0}
         };
         runData = new() {
             {"collisions", new int[targetTicks]},
@@ -208,7 +221,7 @@ public class ExpExec : MonoBehaviour
             {"particles.O", new int[targetTicks]},
             {"particles.X", new int[targetTicks]},
             {"particles.SiSi", new int[targetTicks]},
-            {"particles.OSi", new int[targetTicks]}
+            {"particles.SiO", new int[targetTicks]}
         };
     }
 }

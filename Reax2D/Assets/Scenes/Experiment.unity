@@ -857,12 +857,14 @@ MonoBehaviour:
   temperature: 298
   targetRuns: 100
   targetTicks: 1200
-  exportFilepath: data/exp-1-2.json
+  exportFilepath: data/exp-3-high.json
   totalParticles: 400
   Si: 0.2
-  O: 0.1
-  SiSi: 0.05
+  O: 0.05
+  SiSi: 0.1
   SiO: 0.5
+  SiOSi: 0.5
+  OBreakdown: 0.25
   state: 0
   runIndex: 0
   runTicks: 0
@@ -1443,11 +1445,13 @@ MonoBehaviour:
   sizeX: 1
   sizeSiSi: 2.5
   sizeSiO: 2
+  sizeSiOSi: 3
   colourSi: {r: 1, g: 0.66534376, b: 0.22327036, a: 1}
   colourO: {r: 0.24842751, g: 0.55789846, b: 1, a: 1}
   colourX: {r: 0.505, g: 0.505, b: 0.505, a: 1}
-  colourSiSi: {r: 1, g: 0.39970052, b: 0, a: 1}
+  colourSiSi: {r: 0, g: 0.689, b: 0.051755853, a: 1}
   colourSiO: {r: 1, g: 0, b: 0.24188852, a: 1}
+  colourSiOSi: {r: 0.9166665, g: 0, b: 1, a: 1}
   apexInitVelocity: 100
   apexKineticEnergy: 500000
   existingParticles: []

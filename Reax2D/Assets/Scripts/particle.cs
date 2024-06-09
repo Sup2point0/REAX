@@ -55,19 +55,32 @@ public class Particle : MonoBehaviour
         if (!canReact) return;
 
         if (Random.value < threshold) {
+            var (product, compound) = ExpExec.live.bondingProducts[reactants];
+            transform.position = (transform.position + that.transform.position) / 2;
+            Vector2 velocity = (rigidBody.velocity + thatScript.rigidBody.velocity) / 2;
+
+            if (product == "SPECIAL")
+            {
+                Vector2 impetus = Random.insideUnitCircle;
+                Vector2 vel1 = velocity + impetus;
+                Vector2 vel2 = velocity - impetus;
+                
+                particleExec.GetComponent<ParticleExec>().SpawnParticle("Si", transform, velocity);
+                particleExec.GetComponent<ParticleExec>().SpawnParticle("SiO", transform, velocity);
+                ExpExec.live.liveData[$"particles.SiO"]++;
+                ExpExec.live.liveData[$"particles.Si"]++;
+            }
+            else
+            {
+                particleExec.GetComponent<ParticleExec>().SpawnParticle(product, transform, velocity);
+                ExpExec.live.liveData[$"particles.{compound}"]++;
+            }
+            
             ExpExec.live.liveData["reactions"]++;
             ExpExec.live.liveData[$"particles.{element}"]--;
             ExpExec.live.liveData[$"particles.{thatScript.element}"]--;
 
-            transform.position = (transform.position + that.transform.position) / 2;
-            Vector2 velocity = (rigidBody.velocity + thatScript.rigidBody.velocity) / 2;
-
-            var (elem1, elem2) = Utils.Order((element, thatScript.element));
-            var name = $"{elem1}{elem2}";
-            particleExec.GetComponent<ParticleExec>().SpawnParticle(name, transform, velocity);
-            ExpExec.live.liveData[$"particles.{name}"]++;
-
-            Destroy(this);
+            Destroy(gameObject);
             Destroy(that);
             particleExec.existingParticles.Remove(gameObject);
             particleExec.existingParticles.Remove(that.gameObject);

@@ -16,6 +16,7 @@ public class ParticleExec : MonoBehaviour
     public float sizeX;
     public float sizeSiSi;
     public float sizeSiO;
+    public float sizeSiOSi;
     public Dictionary<string, float> sizes;
 
     public Color colourSi;
@@ -23,6 +24,7 @@ public class ParticleExec : MonoBehaviour
     public Color colourX;
     public Color colourSiSi;
     public Color colourSiO;
+    public Color colourSiOSi;
     public Dictionary<string, Color> colours;
     
     public float apexInitVelocity;
@@ -38,14 +40,16 @@ public class ParticleExec : MonoBehaviour
             { "O", sizeO },
             { "X", sizeX },
             { "SiSi", sizeSiSi },
-            { "OSi", sizeSiO },
+            { "SiO", sizeSiO },
+            { "SiOSi", sizeSiOSi}
         };
         colours = new() {
             { "Si", colourSi },
             { "O", colourO },
             { "X", colourX },
             { "SiSi", colourSiSi },
-            { "OSi", colourSiO },
+            { "SiO", colourSiO },
+            { "SiOSi", colourSiOSi },
         };
     }
 
@@ -103,5 +107,6 @@ public class ParticleExec : MonoBehaviour
         foreach (var particle in existingParticles) {
             Destroy(particle);
         }
+        existingParticles.Clear();
     }
 }

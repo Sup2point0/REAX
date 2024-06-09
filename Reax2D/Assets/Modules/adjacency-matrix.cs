@@ -22,6 +22,9 @@ public class AdjacencyMatrix<T>
         set => _data[Utils.Order((prot, deut))] = value;
     }
 
+    public T this[(string prot, string deut) items]
+        => this[items.prot, items.deut];
+
     public bool TryGetValue((string, string) keys, out T value)
         => _data.TryGetValue(Utils.Order((keys.Item1, keys.Item2)), out value);
 }
